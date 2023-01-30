@@ -22,6 +22,10 @@
      <height>811</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 0);
+background-color: rgb(252, 255, 197);</string>
+   </property>
    <property name="currentIndex">
     <number>0</number>
    </property>
@@ -29,8 +33,8 @@
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>200</x>
-       <y>350</y>
+       <x>170</x>
+       <y>270</y>
        <width>81</width>
        <height>31</height>
       </rect>
@@ -48,11 +52,65 @@
     <widget class="QLineEdit" name="name_lineEdit">
      <property name="geometry">
       <rect>
-       <x>272</x>
-       <y>352</y>
+       <x>260</x>
+       <y>270</y>
        <width>131</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>400</y>
+       <width>181</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>맑은 고딕</family>
+       <pointsize>20</pointsize>
+       <weight>75</weight>
+       <italic>false</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(223, 223, 223);</string>
+     </property>
+     <property name="text">
+      <string>입장하기</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>40</y>
+       <width>461</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>맑은 고딕</family>
+       <pointsize>36</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+</string>
+     </property>
+     <property name="text">
+      <string>KAKAOJANG TALK</string>
      </property>
     </widget>
    </widget>
@@ -65,6 +123,9 @@
        <width>531</width>
        <height>671</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
      <property name="selectionBehavior">
       <enum>QAbstractItemView::SelectRows</enum>
@@ -143,6 +204,9 @@
        <height>81</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
     </widget>
     <widget class="QListWidget" name="listWidget">
      <property name="geometry">
@@ -153,6 +217,9 @@
        <height>551</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
     </widget>
     <widget class="QPushButton" name="pushButton">
      <property name="geometry">
@@ -162,6 +229,10 @@
        <width>75</width>
        <height>23</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+background-color: rgb(223, 223, 223);</string>
      </property>
      <property name="text">
       <string>전송</string>
