@@ -20,6 +20,7 @@ class ChatClient(QMainWindow, form_class):
         self.enter_Button.clicked.connect(self.move_chatroom)
         self.mychat_tableWidget.cellClicked.connect(self.move_chatting)
 
+
         self.initialize_socket(ip,port)
         self.listen_thread()
         self.push_Button.clicked.connect(self.send_chat)
@@ -32,13 +33,16 @@ class ChatClient(QMainWindow, form_class):
         self.show_room()
 
 
-    def move_home(self):
+    def move_home(self): #메인화면
         self.stackedWidget.setCurrentIndex(0)
-    def move_chatroom(self):
+    def move_chatroom(self): #나의채팅방목록보여주기
         self.stackedWidget.setCurrentIndex(1)
-    def move_chatting(self):
+    def move_chatting(self): #채팅방
+        self.selectRoom = (self.mychat_tableWidget.currentItem().text())
+        print('현재입장한방',self.selectRoom)
+        self.roomname_label.setText(self.selectRoom)
         self.stackedWidget.setCurrentIndex(2)
-        self.past_contents()
+        # self.past_contents()  #이전 컨텐츠 불러오기
 
     def initialize_socket(self,ip,port):
         '''
@@ -54,7 +58,7 @@ class ChatClient(QMainWindow, form_class):
         message를 전송하는 버튼 콜백 함수
         '''
         self.senders_name = self.name_lineEdit.text().strip()
-        self.msg_data = self.send_lineEdit.text().strip()
+        self.msg_data = self.send_lineEdit.toPlainText().strip()
         message = (self.senders_name + ":" + self.msg_data).encode('utf-8')
         self.msg_listWidget.addItem(message.decode('utf-8'))
         self.msg_listWidget.scrollToBottom()
@@ -70,7 +74,7 @@ class ChatClient(QMainWindow, form_class):
         t = Thread(target=self.receive_message, args=(self.client_socket,))
         t.start()
 
-    def show_room(self):
+    def show_room(self): #mychat_tableWidget 에 kakaojang.chatting ROOM 목록 넣기
         # MySQL에서 import 해오기
         conn = pymysql.connect(host='10.10.21.123', port=3306, user='eh', password='0000',
                                db='kakaojang')
@@ -79,6 +83,7 @@ class ChatClient(QMainWindow, form_class):
         sql = f"SELECT * FROM chatting"
         a.execute(sql)
         room_info = a.fetchall()    # 이중 튜플((채팅방이름, 보낸사람),)
+        print('dbRoom,Name',room_info)
         row = 0
         self.mychat_tableWidget.setRowCount(len(room_info))
         for i in room_info:
@@ -103,7 +108,7 @@ class ChatClient(QMainWindow, form_class):
                                db='kakaojang')
         a = conn.cursor()
         # 채팅방이름 불러오기
-        sql = f"insert into data(IP, NAME, ROOM, SENDER, DATETIME, LETTER) values ('{self.remote_ip}', '{self.senders_name}', '{self.room_name}', '{self.senders_name}', {'now()'}, '{self.msg_data}')"
+        sql = f"insert into data(IP, NAME, ROOM, SENDER, DATETIME, LETTER) values ('{self.remote_ip}', '{self.senders_name}', '{self.selectRoom}', '{self.senders_name}', {'now()'}, '{self.msg_data}')"
         a.execute(sql)
         conn.commit()
         conn.close()
@@ -124,7 +129,7 @@ class ChatClient(QMainWindow, form_class):
 
 
 if __name__ == '__main__':
-    ip = '10.10.21.123'
+    ip = '10.10.21.115'
     port = 5010
 
     app = QApplication(sys.argv)
