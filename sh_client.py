@@ -2,6 +2,8 @@
 from socket import *
 from threading import *
 import sys
+
+import pymysql
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5 import QtWidgets
@@ -12,50 +14,114 @@ class ChatClient(QMainWindow, form_class):
         super().__init__()
         self.setupUi(self)
 
+        # 페이지 이동
+        self.main1_Button.clicked.connect(self.move_home)
+        self.main2_Button.clicked.connect(self.move_home)
+        self.enter_Button.clicked.connect(self.move_chatroom)
+        self.mychat_tableWidget.cellClicked.connect(self.move_chatting)
+
         self.initialize_socket(ip,port)
         self.listen_thread()
-        self.pushButton.clicked.connect(self.send_chat)
+        self.push_Button.clicked.connect(self.send_chat)
+
+        # tableWidget 열 넓이 조정
+        self.mychat_tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+        # ---실험중---
+        self.stackedWidget.setCurrentIndex(0)
+        self.show_room()
+
+
+    def move_home(self):
+        self.stackedWidget.setCurrentIndex(0)
+    def move_chatroom(self):
+        self.stackedWidget.setCurrentIndex(1)
+    def move_chatting(self):
+        self.stackedWidget.setCurrentIndex(2)
+        self.past_contents()
 
     def initialize_socket(self,ip,port):
         '''
         TCP socket을 생성하고 server와 연결
         '''
-
         self.client_socket = socket(AF_INET, SOCK_STREAM)
-        remote_ip = ip
-        remote_port = port
-        self.client_socket.connect((remote_ip, remote_port))
+        self.remote_ip = ip
+        self.remote_port = port
+        self.client_socket.connect((self.remote_ip, self.remote_port))
 
     def send_chat(self):
         '''
         message를 전송하는 버튼 콜백 함수
         '''
-        senders_name = self.name_lineEdit.text().strip()+":"
-        data = self.send_lineEdit.text().strip()
-        message = (senders_name + data).encode('utf-8')
-        self.listWidget.addItem(message.decode('utf-8'))
-        self.listWidget.scrollToBottom()
+        self.senders_name = self.name_lineEdit.text().strip()
+        self.msg_data = self.send_lineEdit.text().strip()
+        message = (self.senders_name + ":" + self.msg_data).encode('utf-8')
+        self.msg_listWidget.addItem(message.decode('utf-8'))
+        self.msg_listWidget.scrollToBottom()
         self.client_socket.send(message)
+        self.save_message()  # 메세지 DB에 저장하는 함수 불러움
         self.send_lineEdit.clear()
         return 'break'
-
 
     def listen_thread(self):
         '''
         데이터 수신 Tread를 생성하고 시작한다
         '''
-
         t = Thread(target=self.receive_message, args=(self.client_socket,))
         t.start()
+
+    def show_room(self):
+        # MySQL에서 import 해오기
+        conn = pymysql.connect(host='10.10.21.123', port=3306, user='eh', password='0000',
+                               db='kakaojang')
+        a = conn.cursor()
+        # 채팅방이름 불러오기
+        sql = f"SELECT * FROM chatting"
+        a.execute(sql)
+        room_info = a.fetchall()    # 이중 튜플((채팅방이름, 보낸사람),)
+        row = 0
+        self.mychat_tableWidget.setRowCount(len(room_info))
+        for i in room_info:
+            self.mychat_tableWidget.setItem(row, 0, QTableWidgetItem(str(i[0])))
+            row += 1
+        conn.close()
+        self.roomname_label.setText(room_info[0][0])    # 채팅방 이름 보여주기
 
     def receive_message(self, so):
         while True:
             buf = so.recv(256)
             if not buf: # 연결이 종료됨
                 break
-            self.listWidget.addItem(buf.decode('utf-8'))
-            self.listWidget.scrollToBottom()
+            self.msg_listWidget.addItem(buf.decode('utf-8'))
+            self.msg_listWidget.scrollToBottom()
         so.close()
+
+    def save_message(self):
+        self.room_name = self.roomname_label.text()
+        # MySQL에서 import 해오기
+        conn = pymysql.connect(host='10.10.21.123', port=3306, user='eh', password='0000',
+                               db='kakaojang')
+        a = conn.cursor()
+        # 채팅방이름 불러오기
+        sql = f"insert into data(IP, NAME, ROOM, SENDER, DATETIME, LETTER) values ('{self.remote_ip}', '{self.senders_name}', '{self.room_name}', '{self.senders_name}', {'now()'}, '{self.msg_data}')"
+        a.execute(sql)
+        conn.commit()
+        conn.close()
+
+    def past_contents(self):
+        # MySQL에서 import 해오기
+        conn = pymysql.connect(host='10.10.21.123', port=3306, user='eh', password='0000',
+                               db='kakaojang')
+        a = conn.cursor()
+        # 채팅방 지난 내용 불러오기
+        sql = f"SELECT LETTER FROM data where ROOM = '{self.room_name}'"
+        a.execute(sql)
+        letter_info = a.fetchall()  # 이중 튜플((메시지),)
+        print(letter_info)
+        #for i in letter_info:
+            #self.msg_listWidget.addItem()
+
+
 
 if __name__ == '__main__':
     ip = '10.10.21.123'

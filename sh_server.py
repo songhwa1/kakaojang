@@ -1,6 +1,8 @@
 #threading 모듈을 이용한 TCP 멀티 채팅 GUI 프로그램
 from socket import *
 from threading import *
+
+
 class MultiChatServer:
     def __init__(self):
         # 소켓 생성
@@ -56,6 +58,9 @@ class MultiChatServer:
                 except: # 연결 종료
                     self.clients.remove(client) # 소켓 제거
                     print(f'{ip}, {port} 연결이 종료되었습니다')
+
+
+
 
 if __name__ == '__main__':
     MultiChatServer()

@@ -27,7 +27,7 @@
 background-color: rgb(252, 255, 197);</string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QLabel" name="label">
@@ -335,7 +335,7 @@ background-color: rgb(223, 223, 223);</string>
      <property name="geometry">
       <rect>
        <x>440</x>
-       <y>90</y>
+       <y>130</y>
        <width>141</width>
        <height>51</height>
       </rect>
@@ -354,13 +354,38 @@ background-color: rgb(223, 223, 223);</string>
      <property name="geometry">
       <rect>
        <x>440</x>
-       <y>140</y>
+       <y>180</y>
        <width>141</width>
        <height>151</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pastmsg_Button">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>90</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>맑은 고딕</family>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <italic>false</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(223, 223, 223);</string>
+     </property>
+     <property name="text">
+      <string>지난내용</string>
      </property>
     </widget>
    </widget>
