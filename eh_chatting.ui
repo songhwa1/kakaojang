@@ -27,7 +27,7 @@
 background-color: rgb(252, 255, 197);</string>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QLabel" name="label">
@@ -118,9 +118,9 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>60</y>
+       <y>100</y>
        <width>531</width>
-       <height>671</height>
+       <height>631</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -131,7 +131,7 @@ color: rgb(0, 0, 0);
      </property>
      <column>
       <property name="text">
-       <string>나의 채팅방</string>
+       <string>채팅서버</string>
       </property>
      </column>
     </widget>
@@ -177,6 +177,44 @@ color: rgb(0, 0, 0);
      </property>
      <property name="text">
       <string>메인이동</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="createChat_Button">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>60</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>맑은 고딕</family>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <italic>false</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(223, 223, 223);</string>
+     </property>
+     <property name="text">
+      <string>채팅방 생성</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="createChat_lineEdit">
+     <property name="geometry">
+      <rect>
+       <x>302</x>
+       <y>60</y>
+       <width>131</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
     </widget>
    </widget>
